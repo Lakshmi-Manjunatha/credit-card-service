@@ -1,9 +1,11 @@
 package com.credit.card.api.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class MetaData {
+@AllArgsConstructor
+public class Metadata {
 	
 	private String source;
 

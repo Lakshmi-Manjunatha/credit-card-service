@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class CreditCardValidationInput {
+public class CreditCardInput {
 	private CreditCard creditcard;
-	private MetaData source;
+	private Metadata metadata;
 
 }
