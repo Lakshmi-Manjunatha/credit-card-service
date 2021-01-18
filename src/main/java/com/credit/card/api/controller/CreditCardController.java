@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.credit.card.api.model.CreditCard;
 import com.credit.card.api.model.CreditCardInput;
 import com.credit.card.api.model.ValidationError;
+import com.credit.card.api.service.CreditCardService;
 import com.credit.card.api.utils.CreditCardValidator;
 
 @RestController
@@ -24,9 +25,11 @@ public class CreditCardController {
 	private static final Logger log = LoggerFactory.getLogger(CreditCardController.class); 
 	
 	private CreditCardValidator cardvalidator;
+	private CreditCardService creditCardService;
 	
-	public CreditCardController(CreditCardValidator cardvalidator){
-		this.cardvalidator= cardvalidator;
+	public CreditCardController(CreditCardValidator cardvalidator, CreditCardService creditCardService){
+		this.cardvalidator = cardvalidator;
+		this.creditCardService = creditCardService;
 	}
 	
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE )
@@ -44,7 +47,7 @@ public class CreditCardController {
 			return new ResponseEntity<Object>(validationError, HttpStatus.BAD_REQUEST);
 		}
 		
-		return new ResponseEntity<Object>(HttpStatus.CREATED);
+		return new ResponseEntity<Object>(creditCardService.addCreditCardAccount(creditcard), HttpStatus.CREATED);
 	}
 		
 }

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.credit.card.api.model.CreditCard;
 import com.credit.card.api.model.CreditCardInput;
 import com.credit.card.api.model.Metadata;
+import com.credit.card.api.service.CreditCardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(SpringExtension.class)
@@ -27,6 +29,9 @@ public class CreditCardControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
+	@Autowired
+	private CreditCardService creditCardService;
+	
 	private Metadata metadata = new Metadata("Test");
 	
 	CreditCard creditCard = new CreditCard();
@@ -37,7 +42,6 @@ public class CreditCardControllerTest {
 		assertEquals(400,callApiAndReturnResponseCode(creditCard));
 	}
 	
-	
 
 	@Test
 	public void whenNoValidationError_thenReturn200() throws Exception{
@@ -46,6 +50,7 @@ public class CreditCardControllerTest {
 	}
 	
 	private Object callApiAndReturnResponseCode(CreditCard creditCard) throws Exception {
+		Mockito.when(creditCardService.addCreditCardAccount(creditCard)).thenReturn(creditCard);
 		CreditCardInput creditCardInput = new CreditCardInput(creditCard, metadata);
 		MockHttpServletResponse mockResponse =  mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/cards")
 			        .contentType(MediaType.APPLICATION_JSON_VALUE)
