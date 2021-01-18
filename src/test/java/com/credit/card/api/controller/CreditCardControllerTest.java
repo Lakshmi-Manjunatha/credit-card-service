@@ -2,6 +2,10 @@ package com.credit.card.api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -49,10 +53,37 @@ public class CreditCardControllerTest {
 		assertEquals(201,callApiAndReturnResponseCode(creditCard));
 	}
 	
+	@Test
+	public void whenNoData_thenReturn200() throws Exception{
+		List<CreditCard> cards = new ArrayList<CreditCard>();
+		Mockito.when(creditCardService.fetchCreditCardAccounts()).thenReturn(cards);
+		assertEquals(200,callFetchApiAndReturnResponseCode().getStatus());
+	}
+	
+	@Test
+	public void when_fetch_thenReturnCreditCardAccounts() throws Exception{
+		List<CreditCard> cards = new ArrayList<CreditCard>();
+		creditCard.setCardNumber("123456");
+		creditCard.setCardHolderName("test");
+		creditCard.setBalance(BigDecimal.ZERO);
+		cards.add(creditCard);
+		Mockito.when(creditCardService.fetchCreditCardAccounts()).thenReturn(cards);
+		MockHttpServletResponse response = callFetchApiAndReturnResponseCode();
+		assertEquals(200,response.getStatus());
+		List<CreditCard> accounts = objectMapper.readValue(response.getContentAsString(), List.class);
+		assertEquals(1,accounts.size());
+	}
+	
+	private MockHttpServletResponse callFetchApiAndReturnResponseCode() throws Exception {
+		MockHttpServletResponse mockResponse = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/cards")
+		        .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn().getResponse();
+		return mockResponse;
+	}
+
+
 	private Object callApiAndReturnResponseCode(CreditCard creditCard) throws Exception {
 		Mockito.when(creditCardService.addCreditCardAccount(creditCard)).thenReturn(creditCard);
 		CreditCardInput creditCardInput = new CreditCardInput(creditCard, metadata);
-		System.out.println(objectMapper.writeValueAsString(creditCardInput));
 		MockHttpServletResponse mockResponse =  mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/cards")
 			        .contentType(MediaType.APPLICATION_JSON_VALUE)
 			        .content(objectMapper.writeValueAsString(creditCardInput))).andReturn().getResponse();

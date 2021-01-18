@@ -1,5 +1,8 @@
 package com.credit.card.api.service;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +22,15 @@ public class CreditCardService {
 		this.modelMapper = modelMapper;
 	}
 
-	public CreditCard addCreditCardAccount(CreditCard creditcard) {
+	public CreditCard addCreditCardAccount(CreditCard creditcard) throws Exception{
 		CreditCardEntity creditCardEntity = modelMapper.map(creditcard, CreditCardEntity.class);
 		creditCardRepository.save(creditCardEntity);
 		return creditcard;
+	}
+
+	public List<CreditCard> fetchCreditCardAccounts() {
+		List<CreditCardEntity> cardEntities = creditCardRepository.findAll();
+		return Arrays.asList(modelMapper.map(cardEntities, CreditCard[].class));
 	}
 	
 }
