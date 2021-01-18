@@ -4,8 +4,10 @@ import lombok.Data;
 
 @Data
 public class CreditCard {
+	
 	private String cardHolderName;
-	private Integer cardNumber;
+	private String cardNumber;
 	private Boolean balance;
 	private Integer creditLimit;
+	
 }
