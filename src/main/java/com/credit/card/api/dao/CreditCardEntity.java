@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table
+@Table(name = "credit_card")
 @Data
 public class CreditCardEntity {
 	

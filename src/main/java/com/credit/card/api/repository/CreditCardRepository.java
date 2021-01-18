@@ -1,9 +1,11 @@
 package com.credit.card.api.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.credit.card.api.dao.CreditCardEntity;
 
-public interface CreditCardRepository extends CrudRepository<CreditCardEntity, Integer> {
+@Repository
+public interface CreditCardRepository extends JpaRepository<CreditCardEntity, Integer> {
 
 }

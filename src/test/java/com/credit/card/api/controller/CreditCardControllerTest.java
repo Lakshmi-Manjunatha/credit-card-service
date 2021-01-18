@@ -52,6 +52,7 @@ public class CreditCardControllerTest {
 	private Object callApiAndReturnResponseCode(CreditCard creditCard) throws Exception {
 		Mockito.when(creditCardService.addCreditCardAccount(creditCard)).thenReturn(creditCard);
 		CreditCardInput creditCardInput = new CreditCardInput(creditCard, metadata);
+		System.out.println(objectMapper.writeValueAsString(creditCardInput));
 		MockHttpServletResponse mockResponse =  mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/cards")
 			        .contentType(MediaType.APPLICATION_JSON_VALUE)
 			        .content(objectMapper.writeValueAsString(creditCardInput))).andReturn().getResponse();

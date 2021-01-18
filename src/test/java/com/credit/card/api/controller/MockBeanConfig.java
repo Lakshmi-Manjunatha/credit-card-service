@@ -25,5 +25,5 @@ public class MockBeanConfig {
 	public CreditCardRepository creditCardRepositoryBean() {
 		return Mockito.mock(CreditCardRepository.class);
 	}
-
+	
 }
